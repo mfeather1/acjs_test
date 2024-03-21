@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+ <title>10x10 Test Move Sequence</title>
+ <meta name=viewport content="width=device-width, initial-scale=1">
+ <meta name="author" content="Michael Feather">
+ <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
+ <script src=AnimCube.js></script>
+ <style> 
+  body {margin-left: 10%; margin-right: 10%;}
+  p {margin:0; text-align: justify;}
+ </style>
+</head>
+<body>
+<center>
+<div id=t1></div>
+<br>
+<button onclick=mod()>borders</button> &nbsp;
+<br><br>
+<div id=c1 style="width:300px; height:300px">
+</div>
+<br>
+<a href=javascript:history.go(-1)>Back</a>
+<br><br>
+<script>
+var D = 3;
+var acjs_get_var = [];
+var acjs_put_var = [];
+var acjs_setBorderWidth = [];
+var acjs_paint = [];
+main();
+function main() {
+  var params = location.search.substr(1).split('&');
+  for (var i=0; i < params.length; i++) {
+    var p = params[i].split('=');
+    if (typeof(p[1]) != 'undefined')
+      window[p[0]] = p[1];
+  }
+  if (typeof dim != 'undefined') 
+    D = dim;
+  var d = D + 'x' + D;
+  document.title = d + ' Test Move Sequence';
+  var s = '<font size=+2>' + d + ' Test Move Sequence</font>';
+  document.getElementById('t1').innerHTML = s;
+  // s = 'x y z ';
+  s = LR() + UD() + FB();
+  // console.log(s);
+  var p = 'id=c1&dim=' + D + '&bgcolor=cccccc&fonttype=0&colorscheme=WYORGB&move=' + s;
+  AnimCube(p);
+}
+function LR () {
+  s = "L ";
+  for (var i=2; i < D/2+1; i++)
+     s +=  i + "L ";
+  for (var i=Math.floor(D/2); i > 1; i--)
+     s +=  i + "R' ";
+  s += "R' ";
+  return s;
+}
+function UD () {
+  s = "U' ";
+  for (var i=2; i < D/2+1; i++)
+     s +=  i + "U' ";
+  for (var i=Math.floor(D/2); i > 1; i--)
+     s +=  i + "D ";
+  s += "D ";
+  return s;
+}
+function FB () {
+  s = "F ";
+  for (var i=2; i < D/2+1; i++)
+     s +=  i + "F ";
+  for (var i=Math.floor(D/2); i > 1; i--)
+     s +=  i + "B' ";
+  s += "B' ";
+  return s;
+}
+function wide() {
+  if (D < 4)
+    return '';
+  var r = "r u f f' u' r'";
+  s = "nr nu nf nf' nu' nr'";
+  for (var i=3; i < Math.floor(D/2)+1; i++)
+    r += s.replace(/n/g, i);
+  return r;
+}
+function mod(s) {
+  var id = 'c1';
+  var n = acjs_get_var[id]('borderWidth');
+  console.log(n);
+  n = (n == 10) ? 0 : 10;
+  acjs_put_var[id]('borderWidth', n, 'n');
+  acjs_setBorderWidth[id](n / 100);
+  acjs_paint[id]();
+}
+</script>
+</center>
+</body>
+</html>
